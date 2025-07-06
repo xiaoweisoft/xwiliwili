@@ -201,7 +201,7 @@ void BilibiliClient::get_live_room_play_info(int roomid, int qn, const std::func
 
 void BilibiliClient::get_live_pay_info(int roomid, const std::function<void(LivePayInfo)>& callback,
                                        const ErrorCallback& error) {
-    HTTP::__cpr_get(
+    HTTP::_cpr_get(
         Api::RoomPayInfo, {{"room_id", std::to_string(roomid)}},
         [callback, error](const cpr::Response& r) {
             try {

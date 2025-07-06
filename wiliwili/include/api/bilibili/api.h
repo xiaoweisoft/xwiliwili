@@ -21,6 +21,8 @@ const std::string _grpcBase    = "//grpc.biliapi.net";
 /// 视频API
 /// ===
 
+/// Wbi 签名获取地址
+const std::string Nav = _apiBase + "/x/web-interface/nav";
 /// 视频详情. gRPC
 const std::string DetailGRPC = _grpcBase + "/bilibili.app.view.v1.View/View";
 /// 视频详情.
