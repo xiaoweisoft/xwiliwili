@@ -81,18 +81,30 @@ void BilibiliClient::get_hots_history(const std::function<void(HotsHistoryVideoL
 void BilibiliClient::get_hots_rank(int rid, const std::string& type,
                                    const std::function<void(HotsRankVideoListResult, std::string)>& callback,
                                    const ErrorCallback& error) {
-    HTTP::getResultAsync<HotsRankVideoListResultWrapper>(
-        Api::HotsRank, {{"rid", std::to_string(rid)}, {"type", type}},
-        [callback](auto wrapper) { callback(wrapper.list, wrapper.note); }, error);
+    HTTP::getResultWithWbiAsync<HotsRankVideoListResultWrapper>(
+        Api::HotsRank,
+        {
+            {"rid", std::to_string(rid)},
+            {"type", type},
+            {"web_location", "bilibili-electron"},
+        },
+        [callback](const auto& wrapper) { callback(wrapper.list, wrapper.note); },
+        error);
 }
 
 /// 主页 热门 排行榜 官方
 void BilibiliClient::get_hots_rank_pgc(int season_type, int day,
                                        const std::function<void(HotsRankPGCVideoListResult, std::string)>& callback,
                                        const ErrorCallback& error) {
-    HTTP::getResultAsync<HotsRankPGCVideoListResultWrapper>(
-        Api::HotsRankPGC, {{"season_type", std::to_string(season_type)}, {"day", std::to_string(day)}},
-        [callback](auto wrapper) { callback(wrapper.list, wrapper.note); }, error);
+    HTTP::getResultWithWbiAsync<HotsRankPGCVideoListResultWrapper>(
+        Api::HotsRankPGC,
+        {
+            {"season_type", std::to_string(season_type)},
+            {"day", std::to_string(day)},
+            {"web_location", "bilibili-electron"},
+        },
+        [callback](auto wrapper) { callback(wrapper.list, wrapper.note); },
+        error);
 }
 
 /// 主页 直播推荐
