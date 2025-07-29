@@ -483,7 +483,7 @@ void MPVCore::init() {
     mpv_render_param params[]{{MPV_RENDER_PARAM_API_TYPE, const_cast<char *>(MPV_RENDER_API_TYPE_OPENGL)},
                               {MPV_RENDER_PARAM_OPENGL_INIT_PARAMS, &gl_init_params},
                               {MPV_RENDER_PARAM_ADVANCED_CONTROL, &advanced_control},
-#ifdef defined(USE_EGL)
+#if defined(USE_EGL)
 #if defined(GLFW_EXPOSE_NATIVE_X11)
                               {MPV_RENDER_PARAM_X11_DISPLAY, glfwGetX11Display()},
 #endif
