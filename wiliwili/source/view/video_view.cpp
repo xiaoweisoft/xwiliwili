@@ -300,16 +300,10 @@ VideoView::VideoView() {
     /// 视频详情信息
     auto profileFunc = [this](...) {
         CHECK_OSD(true);
-        if (videoProfile->getVisibility() == brls::Visibility::VISIBLE) {
-            videoProfile->setVisibility(brls::Visibility::INVISIBLE);
-            return true;
-        }
-        videoProfile->setVisibility(brls::Visibility::VISIBLE);
-        videoProfile->update();
+        toggleVideoProfile();
         return true;
     };
     this->registerAction("profile", brls::ControllerButton::BUTTON_BACK, profileFunc, true);
-    this->registerAction(ShortcutHelper::getVideoProfile(), profileFunc);
 
     /// 倍速按钮
     auto showSpeedFunc = [](...) {
@@ -897,6 +891,15 @@ void VideoView::toggleOSDLock() {
         osdLockBox->setCustomNavigationRoute(brls::FocusDirection::DOWN, "video/osd/icon/box");
     }
     this->showOSD();
+}
+
+void VideoView::toggleVideoProfile() {
+    if (videoProfile->getVisibility() == brls::Visibility::VISIBLE) {
+        videoProfile->setVisibility(brls::Visibility::INVISIBLE);
+        return;
+    }
+    videoProfile->setVisibility(brls::Visibility::VISIBLE);
+    videoProfile->update();
 }
 
 void VideoView::toggleDanmaku() {
@@ -1660,6 +1663,11 @@ void VideoView::registerCommonActions(brls::Activity* activity) {
     activity->registerAction(ShortcutHelper::getPlaylist(), [this](brls::View* view) {
         CHECK_OSD(true);
         if (this->seasonAction) this->seasonAction(view);
+        return true;
+    });
+    activity->registerAction(ShortcutHelper::getVideoProfile(), [this](...) {
+        CHECK_OSD(true);
+        toggleVideoProfile();
         return true;
     });
 }

@@ -95,6 +95,8 @@ public:
 
     void toggleOSDLock();
 
+    void toggleVideoProfile();
+
     void toggleDanmaku();
 
     void toggleOSD();
