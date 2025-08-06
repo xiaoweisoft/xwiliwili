@@ -792,6 +792,11 @@ void ProgramConfig::load() {
                         break;
                 }
             });
+
+        // Hide the mouse cursor when using gamepad or keyboard
+        brls::Application::getGlobalInputTypeChangeEvent()->subscribe([](auto type) {
+            brls::Application::getPlatform()->getInputManager()->setPointerLock(type == brls::InputType::GAMEPAD);
+        });
     });
 
 #ifdef IOS
