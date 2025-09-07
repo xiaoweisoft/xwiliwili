@@ -164,6 +164,7 @@ std::unordered_map<SettingItem, ProgramOption> ProgramConfig::SETTING_MAP = {
     {SettingItem::SHORTCUT_VIDEO_QUALITY, {"shortcut_video_quality", {}, {}, 0}},
     {SettingItem::SHORTCUT_VIDEO_SPEED, {"shortcut_video_speed", {}, {}, 0}},
     {SettingItem::SHORTCUT_VIDEO_SPEEDUP, {"shortcut_video_speedup", {}, {}, 0}},
+    {SettingItem::SHORTCUT_VIDEO_OSD, {"shortcut_video_osd", {}, {}, 0}},
     {SettingItem::SHORTCUT_VIDEO_PAUSE, {"shortcut_video_pause", {}, {}, 0}},
 
     /// bool
