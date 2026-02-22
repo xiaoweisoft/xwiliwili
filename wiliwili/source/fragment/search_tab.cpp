@@ -53,6 +53,15 @@ brls::View* SearchTab::create() { return new SearchTab(); }
 
 void SearchTab::focusNthTab(int i) { this->tabFrame->focusTab(i); }
 
+void SearchTab::setTabBarVisibility(bool visible) {
+    auto vis = visible ? brls::Visibility::VISIBLE : brls::Visibility::GONE;
+    this->tabFrame->getView("auto_tab_frame/auto_sidebar")->setVisibility(vis);
+    // Also hide the sub-tabs (sort order) within the video tab
+    this->searchVideoTab->setTabBarVisibility(visible);
+    // Restore top spacing lost from hiding the tab bar
+    if (!visible) this->setPaddingTop(15);
+}
+
 SearchHistory* SearchTab::getSearchHistoryTab() { return searchHistoryTab; };
 
 SearchHots* SearchTab::getSearchHotsTab() { return searchHotsTab; }

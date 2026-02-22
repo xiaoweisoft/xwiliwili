@@ -3,6 +3,7 @@
  */
 
 #include <borealis/core/touch/tap_gesture.hpp>
+#include <borealis/views/applet_frame.hpp>
 
 #include "activity/search_activity.hpp"
 #include "fragment/search_tab.hpp"
@@ -13,6 +14,7 @@
 #include "utils/event_helper.hpp"
 #include "analytics.h"
 #include "utils/shortcut_helper.hpp"
+#include "utils/activity_helper.hpp"
 
 using namespace brls::literals;
 
@@ -24,6 +26,20 @@ SearchActivity::SearchActivity(const std::string& key) {
 
 void SearchActivity::onContentAvailable() {
     brls::Logger::debug("SearchActivity: onContentAvailable");
+
+    if (Intent::MINIMAL_MODE) {
+        // Hide the search box
+        this->searchBox->getParent()->setVisibility(brls::Visibility::GONE);
+        // Hide the close button (find via its inner label id)
+        auto* closeBtnLabel = this->getContentView()->getView("close/button/text");
+        if (closeBtnLabel && closeBtnLabel->getParent())
+            closeBtnLabel->getParent()->setVisibility(brls::Visibility::GONE);
+        // Hide the AppletFrame footer
+        auto* frame = dynamic_cast<brls::AppletFrame*>(this->getContentView());
+        if (frame) frame->setFooterVisibility(brls::Visibility::GONE);
+        // Hide the tab bar in SearchTab so only video results are visible
+        this->searchTab->setTabBarVisibility(false);
+    }
 
     auto openText = [this]() {
         brls::Application::getImeManager()->openForText([&](const std::string& text) { this->search(text); },

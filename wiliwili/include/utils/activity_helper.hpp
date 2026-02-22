@@ -7,6 +7,7 @@
 
 class Intent {
 public:
+    inline static bool MINIMAL_MODE = false;
     // 开启各类视频
     static void openAV(const std::string& avid, uint64_t cid = 0, int progress = -1);
     static void openBV(const std::string& bvid, uint64_t cid = 0, int progress = -1);

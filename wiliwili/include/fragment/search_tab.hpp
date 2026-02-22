@@ -154,6 +154,8 @@ public:
 
     void focusNthTab(int i);
 
+    void setTabBarVisibility(bool visible);
+
     SearchHistory* getSearchHistoryTab();
 
     SearchHots* getSearchHotsTab();

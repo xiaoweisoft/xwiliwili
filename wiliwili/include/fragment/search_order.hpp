@@ -19,6 +19,8 @@ public:
 
     void focusNthTab(int i);
 
+    void setTabBarVisibility(bool visible);
+
     void onCreate() override;
 
     static View* create();

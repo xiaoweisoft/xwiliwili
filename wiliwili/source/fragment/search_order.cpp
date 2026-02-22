@@ -23,6 +23,11 @@ SearchOrder::SearchOrder() {
 
 void SearchOrder::focusNthTab(int i) { this->tabFrame->focusTab(i); }
 
+void SearchOrder::setTabBarVisibility(bool visible) {
+    auto vis = visible ? brls::Visibility::VISIBLE : brls::Visibility::GONE;
+    this->tabFrame->getView("auto_tab_frame/auto_sidebar")->setVisibility(vis);
+}
+
 SearchOrder::~SearchOrder() {
     brls::Logger::debug("Fragment SearchOrder: delete");
 }

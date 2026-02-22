@@ -143,6 +143,9 @@ public:
 
     void hideVideoProgressSlider();
 
+    /// Hide non-essential OSD controls for minimal mode
+    void setMinimalOSD();
+
     /// 隐藏左下角的播放时间
     void hideStatusLabel();
 

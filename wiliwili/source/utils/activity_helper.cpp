@@ -3,6 +3,8 @@
 //
 
 #include <borealis/core/application.hpp>
+#include <borealis/core/thread.hpp>
+#include <borealis/views/dialog.hpp>
 #include "activity/player_activity.hpp"
 #include "activity/live_player_activity.hpp"
 #include "activity/hint_activity.hpp"
@@ -15,6 +17,7 @@
 #include "activity/dlna_activity.hpp"
 #include "activity/dynamic_activity.hpp"
 #include "fragment/mine_collection_video_list.hpp"
+#include "fragment/mine_qr_login.hpp"
 #include "fragment/inbox_view.hpp"
 #include "utils/activity_helper.hpp"
 #include "utils/config_helper.hpp"
@@ -78,6 +81,32 @@ void Intent::openCollection(const std::string& mid, const std::string& type) {
 
 void Intent::openSearch(const std::string& key) {
     if (key.empty()) return;
+
+    if (MINIMAL_MODE && !ProgramConfig::instance().hasLoginInfo()) {
+        // Show QR login first, then open search on success
+        auto* placeholder = new brls::Box();
+        placeholder->setDimensions(brls::View::AUTO, brls::View::AUTO);
+        auto* placeholderActivity = new brls::Activity(placeholder);
+        brls::Application::pushActivity(placeholderActivity, brls::TransitionAnimation::NONE);
+
+        loginStatusEvent loginCb;
+        loginCb.subscribe([key](bilibili::LoginInfo info) {
+            if (info == bilibili::LoginInfo::SUCCESS) {
+                brls::sync([key]() {
+                    brls::Application::popActivity(brls::TransitionAnimation::NONE, [key]() {
+                        auto activity = new SearchActivity(key);
+                        brls::Application::pushActivity(activity, brls::TransitionAnimation::NONE);
+                    });
+                });
+            }
+        });
+
+        auto* dialog = new brls::Dialog(MineQrLogin::create(loginCb));
+        dialog->setCancelable(false);
+        dialog->open();
+        return;
+    }
+
     auto activity = new SearchActivity(key);
     brls::Application::pushActivity(activity, brls::TransitionAnimation::NONE);
 }

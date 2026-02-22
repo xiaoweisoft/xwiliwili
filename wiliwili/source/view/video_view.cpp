@@ -1071,6 +1071,26 @@ void VideoView::hideSkipOpeningCreditsSetting() { showOpeningCreditsSetting = fa
 
 void VideoView::hideVideoProgressSlider() { osdSlider->setVisibility(brls::Visibility::GONE); }
 
+void VideoView::setMinimalOSD() {
+    // Top bar: hide viewer count, cast, settings
+    videoOnlineCountLabel->getParent()->setVisibility(brls::Visibility::GONE);
+    btnCastIcon->getParent()->setVisibility(brls::Visibility::GONE);
+    btnSettingIcon->getParent()->setVisibility(brls::Visibility::GONE);
+    // Bottom bar: hide volume, danmaku settings, danmaku toggle, quality, speed, episode, fullscreen
+    btnVolumeIcon->getParent()->setVisibility(brls::Visibility::GONE);
+    btnDanmakuSettingIcon->getParent()->setVisibility(brls::Visibility::GONE);
+    btnDanmakuIcon->getParent()->setVisibility(brls::Visibility::GONE);
+    videoQuality->getParent()->setVisibility(brls::Visibility::GONE);
+    videoSpeed->getParent()->setVisibility(brls::Visibility::GONE);
+    showEpisode->getParent()->setVisibility(brls::Visibility::GONE);
+    btnFullscreenIcon->getParent()->setVisibility(brls::Visibility::GONE);
+    // Hide lock button
+    osdLockBox->setVisibility(brls::Visibility::INVISIBLE);
+    hide_lock_button = true;
+    // Disable danmaku
+    enableDanmaku = false;
+}
+
 void VideoView::setTitle(const std::string& title) { this->videoTitleLabel->setText(title); }
 
 void VideoView::setOnlineCount(const std::string& count) { this->videoOnlineCountLabel->setText(count); }

@@ -17,6 +17,7 @@
 #include "utils/number_helper.hpp"
 #include "presenter/comment_related.hpp"
 #include "utils/shortcut_helper.hpp"
+#include "utils/activity_helper.hpp"
 #include "view/qr_image.hpp"
 #include "view/video_view.hpp"
 #include "view/grid_dropdown.hpp"
@@ -200,6 +201,28 @@ private:
 void BasePlayerActivity::onContentAvailable() { this->setCommonData(); }
 
 void BasePlayerActivity::setCommonData() {
+    if (Intent::MINIMAL_MODE) {
+        // Hide info box below video
+        auto* infoBox = dynamic_cast<brls::Box*>(this->getContentView()->getView("video_detail_info_box"));
+        if (infoBox) infoBox->setVisibility(brls::Visibility::GONE);
+        // Hide right panel (comments/tabs)
+        auto* rightBox = dynamic_cast<brls::Box*>(this->getContentView()->getView("video_detail_right_box"));
+        if (rightBox) rightBox->setVisibility(brls::Visibility::GONE);
+        // Let the left box and video fill all available space
+        auto* leftBox = dynamic_cast<brls::Box*>(this->getContentView()->getView("video_detail_left_box"));
+        if (leftBox) {
+            leftBox->setWidth(brls::View::AUTO);
+            leftBox->setGrow(1.0f);
+            leftBox->setMargins(0, 0, 0, 0);
+        }
+        this->video->setWidth(brls::View::AUTO);
+        this->video->setGrow(1.0f);
+        // Hide non-essential OSD controls
+        this->video->setMinimalOSD();
+        // Hide footer
+        this->appletFrame->setFooterVisibility(brls::Visibility::GONE);
+    }
+
     // 视频评论
     recyclingGrid->registerCell("Cell", []() { return VideoComment::create(); });
 
